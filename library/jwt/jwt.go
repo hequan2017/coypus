@@ -3,7 +3,10 @@ package jwt
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gogf/gf/g"
+	"github.com/gogf/gf/g/net/ghttp"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -59,4 +62,29 @@ func GetIdFromClaims(key string, claims jwt.Claims) string {
 		}
 	}
 	return ""
+}
+
+func JWT(r *ghttp.Request) {
+	Authorization := r.Header.Get("Authorization")
+	fmt.Println(Authorization)
+	token := strings.Split(Authorization, " ")
+	if Authorization == "" {
+		_ = r.Response.WriteJson(g.Map{
+			"err":  1,
+			"msg":  "请求 Authorization 为空",
+			"data": nil,
+		})
+		r.ExitAll()
+	} else {
+		_, err := ParseToken(token[1])
+		if err != nil {
+			_ = r.Response.WriteJson(g.Map{
+				"err":  2,
+				"msg":  "token 未验证通过",
+				"data": nil,
+			})
+			r.ExitAll()
+		}
+	}
+	return
 }
