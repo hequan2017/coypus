@@ -1,0 +1,7 @@
+github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
+github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
+github.com/gogf/gf v1.6.2/go.mod h1:qboeF6kS9EQu2Z1IECeApNF0/N7Sw4wc0RUAwAfT6Mg=
+github.com/gogf/gf v1.6.9 h1:23jjC/oY1E1BNVMZ8wB1jkA3tT2BEtwdf/lHwxB2yjI=
+github.com/gogf/gf v1.6.9/go.mod h1:qJRcq0s3RskjJIZKsSHjZkpxw91rd0EAh+4CUbawbXQ=
+github.com/gogf/gf-jwt v1.0.5 h1:zNfnOeRSoT9p062R2DN5wkdT3BTw/K9jyf2f4axF73c=
+github.com/gogf/gf-jwt v1.0.5/go.mod h1:VlFL7YaPDbyFy96HNr0EDLGm9MyvscE3xLVEVpeyhiU=
