@@ -1,13 +1,13 @@
 # 应用系统设置
 [setting]
     logpath = "log/"
+    JwtSecret = "123456789"
 
 # 数据库连接
 [database]
-    [[database.default]]
-        host = "192.168.100.50"
-        port = "4000"
-        user = "root"
-        pass = "123456"
-        name = "coypus"
-        type = "mysql"
+    host = "192.168.100.50:4000"
+    user = "root"
+    pass = "123456"
+    name = "coypus"
+    type = "mysql"
+    TablePrefix = "go_"

@@ -15,7 +15,7 @@ func Json(r *ghttp.Request, err int, msg string, data ...interface{}) {
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	r.Response.WriteJson(g.Map{
+	_ = r.Response.WriteJson(g.Map{
 		"err":  err,
 		"msg":  msg,
 		"data": responseData,

@@ -10,21 +10,25 @@ import (
 	"time"
 )
 
-var JwtSecret = []byte("111111111111111111")
+
+func JwtSecret() []byte{
+	c := g.Config()
+	return  []byte(c.GetString("setting.JwtSecret"))
+}
+
 
 type Claims struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(username, password string) (string, error) {
+// 生成token
+func GenerateToken(username string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Claims{
 		username,
-		password,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "https://github.com/hequan2017/go-admin/",
@@ -32,13 +36,14 @@ func GenerateToken(username, password string) (string, error) {
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := tokenClaims.SignedString(JwtSecret)
+	token, err := tokenClaims.SignedString(JwtSecret())
 	return token, err
 }
 
+// 验证token
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return JwtSecret, nil
+		return JwtSecret(), nil
 	})
 
 	if tokenClaims != nil {
@@ -50,6 +55,7 @@ func ParseToken(token string) (*Claims, error) {
 	return nil, err
 }
 
+// 根据 token 获取用户名
 func GetIdFromClaims(key string, claims jwt.Claims) string {
 	v := reflect.ValueOf(claims)
 	if v.Kind() == reflect.Map {
@@ -66,7 +72,6 @@ func GetIdFromClaims(key string, claims jwt.Claims) string {
 
 func JWT(r *ghttp.Request) {
 	Authorization := r.Header.Get("Authorization")
-	fmt.Println(Authorization)
 	token := strings.Split(Authorization, " ")
 	if Authorization == "" {
 		_ = r.Response.WriteJson(g.Map{

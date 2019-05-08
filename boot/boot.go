@@ -4,10 +4,15 @@ import (
 	"github.com/gogf/gf/g"
 	"github.com/gogf/gf/g/net/ghttp"
 	"github.com/gogf/gf/g/os/glog"
+	_ "github.com/hequan2017/coypus/app/model"
+	"github.com/hequan2017/coypus/library/inject"
+	_ "github.com/hequan2017/coypus/library/inject"
+	_ "github.com/hequan2017/coypus/router"
 )
 
 // 用于应用初始化。
 func init() {
+
 	v := g.View()
 	c := g.Config()
 	s := g.Server()
@@ -28,4 +33,6 @@ func init() {
 	s.SetErrorLogEnabled(true)
 	s.SetAccessLogEnabled(true)
 	s.SetPort(8000)
+
+	_ = inject.LoadCasbinPolicyData()
 }
