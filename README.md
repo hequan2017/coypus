@@ -22,11 +22,49 @@
 - main.go	入口文件	程序入口文件。
 ```
 
+
 ## 实现功能
 * 登录
 * jwt验证
-* 权限验证(casbin)
+* 权限验证
+
+
+##  运行
+
+```bash
+go run  main.go
+
+2019/05/08 18:10:38 [info] replacing callback `gorm:update_time_stamp` from E:/coypus/app/model/model.go:40
+2019/05/08 18:10:38 [info] replacing callback `gorm:update_time_stamp` from E:/coypus/app/model/model.go:41
+2019/05/08 18:10:38 [info] replacing callback `gorm:delete` from E:/coypus/app/model/model.go:42
+2019-05-08 18:10:38.345 [DEBU] [ghttp] SetServerRoot path: E:\coypus\public
+2019-05-08 18:10:38.395 [INFO] 更新角色权限关系 [[hequan test]]
+2019-05-08 18:10:38.395 [INFO] 角色权限关系 [[hequan test]]
+2019-05-08 18:10:38.397 16856: http server started listening on [:8000]
+
+  SERVER  | ADDRESS | DOMAIN  | METHOD | P |        ROUTE         |                                 HANDLER                                 |    HOOK
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+  default | :8000   | default | ALL    | 1 | /*any                | main.main.func2                                                         | BeforeServe
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+  default | :8000   | default | ALL    | 2 | /api/*any            | main.main.func1                                                         | BeforeServe
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+  default | :8000   | default | ALL    | 2 | /api/1               | github.com/hequan2017/coypus/router.init.0.func1                        |
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+  default | :8000   | default | ALL    | 2 | /user/check-username | github.com/hequan2017/coypus/app/api/a_user.(*Controller).CheckUsername |
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+  default | :8000   | default | ALL    | 2 | /user/login          | github.com/hequan2017/coypus/app/api/a_user.(*Controller).Login         |
+|---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
+
+```
+
+## 所用组件
+* goframe
+* gorm
+* casbin
+* jwt-go
+* mysql
 
 
 ## 作者
 * 何全
+
