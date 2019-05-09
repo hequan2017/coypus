@@ -55,6 +55,8 @@ go run  main.go
   default | :8000   | default | ALL    | 2 | /user/login          | github.com/hequan2017/coypus/app/api/a_user.(*Controller).Login         |
 |---------|---------|---------|--------|---|----------------------|-------------------------------------------------------------------------|-------------|
 
+
+默认账户密码  admin  123456
 ```
 
 ## 所用组件
@@ -63,6 +65,7 @@ go run  main.go
 * casbin
 * jwt-go
 * mysql
+* sha1
 
 
 ## 作者

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,14 +16,13 @@ func CheckUser(username, password string) (bool, error) {
 	var user User
 	err := db.Select("id").Where(User{Username: username, Password: password}).First(&user).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
+		return false, errors.New("账户未找到")
 	}
-
 	if user.ID > 0 {
 		return true, nil
 	}
 
-	return false, nil
+	return false, errors.New("账户未找到")
 }
 
 func ExistUserByID(id int) (bool, error) {
@@ -35,7 +35,7 @@ func ExistUserByID(id int) (bool, error) {
 		return true, nil
 	}
 
-	return false, nil
+	return false, err
 }
 
 func GetUserTotal(maps interface{}) (int, error) {

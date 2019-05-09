@@ -5,17 +5,15 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gogf/gf/g"
 	"github.com/gogf/gf/g/net/ghttp"
+	"net/http"
 	"reflect"
 	"strings"
 	"time"
 )
 
-
-func JwtSecret() []byte{
-	c := g.Config()
-	return  []byte(c.GetString("setting.JwtSecret"))
+func JwtSecret() []byte {
+	return []byte(g.Config().GetString("setting.PageSize"))
 }
-
 
 type Claims struct {
 	Username string `json:"username"`
@@ -25,7 +23,7 @@ type Claims struct {
 // 生成token
 func GenerateToken(username string) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
+	expireTime := nowTime.Add(24 * time.Hour)
 
 	claims := Claims{
 		username,
@@ -71,25 +69,30 @@ func GetIdFromClaims(key string, claims jwt.Claims) string {
 }
 
 func JWT(r *ghttp.Request) {
-	Authorization := r.Header.Get("Authorization")
-	token := strings.Split(Authorization, " ")
-	if Authorization == "" {
-		_ = r.Response.WriteJson(g.Map{
-			"err":  1,
-			"msg":  "请求 Authorization 为空",
-			"data": nil,
-		})
-		r.ExitAll()
+	if r.URL.Path == "/token" {
+		r.Exit()
 	} else {
-		_, err := ParseToken(token[1])
-		if err != nil {
+		Authorization := r.Header.Get("Authorization")
+		token := strings.Split(Authorization, " ")
+		if Authorization == "" {
 			_ = r.Response.WriteJson(g.Map{
-				"err":  2,
-				"msg":  "token 未验证通过",
+				"code": http.StatusInternalServerError,
+				"msg":  "请求 Authorization 为空",
 				"data": nil,
 			})
 			r.ExitAll()
+		} else {
+			_, err := ParseToken(token[1])
+			if err != nil {
+				_ = r.Response.WriteJson(g.Map{
+					"code": http.StatusInternalServerError,
+					"msg":  "token 未验证通过",
+					"data": nil,
+				})
+				r.ExitAll()
+			}
 		}
+		return
 	}
-	return
+
 }

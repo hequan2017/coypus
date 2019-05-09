@@ -9,6 +9,6 @@ import (
 func init() {
 	// 用户模块 路由注册 - 使用执行对象注册方式
 	s := g.Server()
-	s.BindObject("/user", new(a_user.Controller))
-
+	s.BindHandler("/token", a_user.Login)
+	s.BindObjectRest("/user", new(a_user.Controller))
 }

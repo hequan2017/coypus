@@ -34,5 +34,7 @@ func init() {
 	s.SetAccessLogEnabled(true)
 	s.SetPort(8000)
 
+	AppSetting.PageSize = c.GetInt("setting.PageSize")
+
 	_ = inject.LoadCasbinPolicyData()
 }
