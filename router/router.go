@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/gogf/gf/g"
-	"github.com/gogf/gf/g/net/ghttp"
 	"github.com/hequan2017/coypus/app/api/a_user"
 )
 
@@ -12,7 +11,4 @@ func init() {
 	s := g.Server()
 	s.BindObject("/user", new(a_user.Controller))
 
-	s.BindHandler("/api/1", func(r *ghttp.Request){
-		r.Response.Writeln(r.Router.Uri)
-	})
 }
