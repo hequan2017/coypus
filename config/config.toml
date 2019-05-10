@@ -2,7 +2,7 @@
 [setting]
     logpath = "log/"
     JwtSecret = "123456789"
-    PageSize = 1
+    PageSize = 2
 
 # 数据库连接
 [database]

@@ -12,7 +12,7 @@ func main() {
 	s := g.Server()
 	s.BindHookHandlerByMap("/*any", map[string]ghttp.HandlerFunc{
 		"BeforeServe": func(r *ghttp.Request) {
-			r.Response.CORSDefault()
+			r.Response.CORSDefault()       //关闭 CORS
 			jwt.JWT(r)                     // 验证 token 是否正确
 			permission.CasbinMiddleware(r) // 权限验证
 		}})

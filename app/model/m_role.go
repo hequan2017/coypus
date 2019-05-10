@@ -21,7 +21,7 @@ func ExistRoleByID(id int) (bool, error) {
 		return true, nil
 	}
 
-	return false, nil
+	return false, err
 }
 
 func GetRoleTotal(maps interface{}) (int, error) {

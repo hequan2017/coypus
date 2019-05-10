@@ -1,18 +1,18 @@
 package s_user
 
 import (
-	"errors"
 	"github.com/casbin/casbin"
 	"github.com/gogf/gf/g/crypto/gsha1"
 	"github.com/gogf/gf/g/os/glog"
 	"github.com/hequan2017/coypus/app/model"
+	"github.com/hequan2017/coypus/library/e"
 )
 
 type User struct {
 	ID       int
 	Username string
 	Password string
-	Role     int
+	Role     []int
 
 	CreatedBy  string
 	ModifiedBy string
@@ -45,7 +45,7 @@ func (a *User) LoadAllPolicy() error {
 	return nil
 }
 
-func (a *User) Add() (id int, err error) {
+func (a *User) Add() (id int, err int) {
 	menu := map[string]interface{}{
 		"username": a.Username,
 		"password": gsha1.Encrypt(a.Password),
@@ -54,34 +54,34 @@ func (a *User) Add() (id int, err error) {
 	username, _ := model.CheckUserUsername(a.Username)
 
 	if username {
-		return 0, errors.New("username 名字重复,请更改！")
+		return 0, e.ERROR_USER_EXIST
+	}
+	for _, v := range a.Role {
+		roles, _ := model.ExistRoleByID(v)
+		if !roles {
+			return 0, e.ERROR_ROLE_EXIST_FAIL
+		}
 	}
 
-	if id, err := model.AddUser(menu); err == nil {
-		return id, err
+	if id, err := model.AddUser(menu); err != nil {
+		return 0, e.ERROR_USER_ADD_FAIL
 	} else {
-		return 0, err
+		return id, e.SUCCESS
 	}
 }
 
-func (a *User) Edit() error {
+func (a *User) Edit() (id, error int) {
 	data := map[string]interface{}{
 		"username": a.Username,
 		"password": a.Password,
 		"role_id":  a.Role,
 	}
 
-	username, _ := model.CheckUserUsernameId(a.Username, a.ID)
-
-	if username {
-		return errors.New("username 名字重复,请更改！")
-	}
-	err := model.EditUser(a.ID, data)
+	id, err := model.EditUser(a.ID, data)
 	if err != nil {
-		return err
+		return 0, e.INVALID_PARAMS
 	}
-
-	return nil
+	return id, 0
 }
 
 func (a *User) Get() (*model.User, error) {

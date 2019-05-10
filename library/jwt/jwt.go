@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gogf/gf/g"
 	"github.com/gogf/gf/g/net/ghttp"
+	"github.com/hequan2017/coypus/library/e"
 	"net/http"
 	"reflect"
 	"strings"
@@ -76,8 +77,8 @@ func JWT(r *ghttp.Request) {
 		token := strings.Split(Authorization, " ")
 		if Authorization == "" {
 			_ = r.Response.WriteJson(g.Map{
-				"code": http.StatusInternalServerError,
-				"msg":  "请求 Authorization 为空",
+				"code": http.StatusForbidden,
+				"msg":  e.GetMsg(e.ERROR_AUTH_CHECK_TOKEN_FAIL),
 				"data": nil,
 			})
 			r.ExitAll()
@@ -85,8 +86,8 @@ func JWT(r *ghttp.Request) {
 			_, err := ParseToken(token[1])
 			if err != nil {
 				_ = r.Response.WriteJson(g.Map{
-					"code": http.StatusInternalServerError,
-					"msg":  "token 未验证通过",
+					"code": http.StatusForbidden,
+					"msg":  e.GetMsg(e.ERROR_AUTH_CHECK_TOKEN_FAIL),
 					"data": nil,
 				})
 				r.ExitAll()

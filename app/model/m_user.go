@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"github.com/gogf/gf/g/os/glog"
 	"github.com/jinzhu/gorm"
 )
 
@@ -93,18 +94,17 @@ func CheckUserUsernameId(username string, id int) (bool, error) {
 	return false, nil
 }
 
-func EditUser(id int, data map[string]interface{}) error {
+func EditUser(id int, data map[string]interface{}) (ids int, err error) {
 	var role []Role
 	var user User
 	db.Where("id in (?)", data["role_id"].(int)).Find(&role)
-
 	if err := db.Where("id = ? AND deleted_on = ? ", id, 0).Find(&user).Error; err != nil {
-		return err
+		return 0, err
 	}
 	db.Model(&user).Association("Role").Replace(role)
 	db.Model(&user).Update(data)
 
-	return nil
+	return user.ID, nil
 }
 
 func AddUser(data map[string]interface{}) (id int, err error) {
@@ -113,8 +113,13 @@ func AddUser(data map[string]interface{}) (id int, err error) {
 		Password: data["password"].(string),
 	}
 	var role []Role
-	db.Where("id in (?)", data["role_id"].(int)).Find(&role)
+
+	if err := db.Where("id in (?)", data["role_id"]).Find(&role).Error; err != nil {
+		glog.Error(err)
+		return 0, err
+	}
 	if err := db.Create(&user).Association("Role").Append(role).Error; err != nil {
+		glog.Error(err)
 		return 0, err
 	}
 	return user.ID, nil
