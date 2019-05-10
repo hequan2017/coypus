@@ -22,7 +22,7 @@ func CasbinMiddleware(r *ghttp.Request) {
 
 	if b, err := inject.Obj.Enforcer.EnforceSafe(jwtGet.GetIdFromClaims("username", t.Claims), r.Request.URL.Path, r.Request.Method); err != nil {
 		_ = r.Response.WriteJson(g.Map{
-			"code": http.StatusForbidden,
+			"code": http.StatusInternalServerError,
 			"msg":  e.GetMsg(e.ERROR_AUTH_CHECK_TOKEN_FAIL),
 			"data": nil,
 		})
