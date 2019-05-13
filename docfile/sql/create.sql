@@ -116,8 +116,8 @@ CREATE TABLE `go_user` (
 -- ----------------------------
 -- Records of go_user
 -- ----------------------------
-INSERT INTO `go_user` VALUES ('1', 'admin', '123456', null, null, '0');
-INSERT INTO `go_user` VALUES ('2', 'hequan', '123456', '1550642309', '1550642309', '0');
+INSERT INTO `go_user` VALUES ('1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', null, null, '0');
+INSERT INTO `go_user` VALUES ('2', 'hequan', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1550642309', '1550642309', '0');
 
 -- ----------------------------
 -- Table structure for go_user_role
