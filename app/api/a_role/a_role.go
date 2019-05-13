@@ -1,74 +1,47 @@
-package a_user
+package a_role
 
 import (
 	"github.com/gogf/gf/g"
 	"github.com/gogf/gf/g/net/ghttp"
 	"github.com/gogf/gf/g/os/glog"
 	"github.com/gogf/gf/g/util/gvalid"
-	"github.com/hequan2017/coypus/app/service/s_user"
+	"github.com/hequan2017/coypus/app/service/s_role"
 	"github.com/hequan2017/coypus/library/e"
 	"github.com/hequan2017/coypus/library/inject"
-	"github.com/hequan2017/coypus/library/jwt"
 	"github.com/hequan2017/coypus/library/response"
 	"github.com/hequan2017/coypus/library/util"
 	"net/http"
 )
 
-// 用户API管理对象
+// 权限组 API管理对象
 type Controller struct{}
 
 var rules = map[string]string{
-	"username": "required",
-	"password": "required",
-	"role":     "required-with|integer",
+	"name": "required",
+	"menu": "required-with|integer",
 }
 
 var msgs = map[string]interface{}{
-	"username": "账号不能为空",
-	"password": "密码不能为空",
-	"role":     "权限组 id 必须为 整数 列表",
-}
-
-// 用户登录接口
-func Login(r *ghttp.Request) {
-
-	data := r.GetJson()
-
-	if err := gvalid.CheckMap(data.ToMap(), rules, msgs); err != nil {
-		response.Json(r, http.StatusBadRequest, e.INVALID_PARAMS, err.String())
-	}
-
-	authService := s_user.User{Username: data.GetString("username"), Password: data.GetString("password")}
-	_, err := authService.Check()
-
-	if err != nil {
-		response.Json(r, http.StatusBadRequest, e.ERROR_USER_NOT_EXIST, "")
-	} else {
-		token, _ := jwt.GenerateToken(data.GetString("username"))
-		data := map[string]string{
-			"token": token,
-		}
-		response.Json(r, http.StatusOK, e.SUCCESS, data)
-	}
+	"name": "名称 不能为空",
+	"menu": "菜单 id 必须为 整数 列表",
 }
 
 // RESTFul - GET
 func (c *Controller) Get(r *ghttp.Request) {
-	userService := s_user.User{
-		Username: r.GetString("username"),
+	roleService := s_role.Role{
+		Name:     r.GetString("name"),
 		PageNum:  util.GetPage(r),
 		PageSize: g.Config().GetInt("setting.PageSize"),
 	}
 	id := r.GetInt("id")
 
 	if id != 0 {
-		userService.ID = id
-		user, err := userService.Get()
+		roleService.ID = id
+		user, err := roleService.Get()
 		if err != nil {
 			response.Json(r, http.StatusBadRequest, e.ERROR_USER_EXIST_FAIL, "")
 			return
 		}
-		user.Password = ""
 		data := make(map[string]interface{})
 		data["lists"] = user
 
@@ -76,18 +49,15 @@ func (c *Controller) Get(r *ghttp.Request) {
 
 	} else {
 
-		total, err := userService.Count()
+		total, err := roleService.Count()
 		if err != nil {
 			response.Json(r, http.StatusBadRequest, e.ERROR_USER_GET_S_FAIL, "")
 			return
 		}
-		users, err := userService.GetAll()
+		users, err := roleService.GetAll()
 		if err != nil {
 			response.Json(r, http.StatusBadRequest, e.ERROR_USER_GET_S_FAIL, "")
 			return
-		}
-		for _, v := range users {
-			v.Password = ""
 		}
 
 		data := make(map[string]interface{})
@@ -106,13 +76,12 @@ func (c *Controller) Post(r *ghttp.Request) {
 	if err := gvalid.CheckMap(data.ToMap(), rules, msgs); err != nil {
 		response.Json(r, http.StatusBadRequest, e.INVALID_PARAMS, err.String())
 	}
-	userService := s_user.User{
-		Username: data.GetString("username"),
-		Password: data.GetString("password"),
-		Role:     data.GetInts("role"),
+	roleService := s_role.Role{
+		Name: data.GetString("name"),
+		Menu: data.GetInts("menu"),
 	}
 
-	if id, err := userService.Add(); err != e.SUCCESS {
+	if id, err := roleService.Add(); err != e.SUCCESS {
 		response.Json(r, http.StatusBadRequest, err, "")
 	} else {
 		err := inject.Obj.Common.UserAPI.LoadPolicy(id)
@@ -129,25 +98,25 @@ func (c *Controller) Post(r *ghttp.Request) {
 func (c *Controller) Put(r *ghttp.Request) {
 	data := r.GetJson()
 	if id := r.GetInt("id"); id <= 0 {
-		response.Json(r, http.StatusBadRequest, e.ERROR_USER_EDIT_FAIL, "")
+		response.Json(r, http.StatusBadRequest, e.ERROR_ROLE_EDIT_FAIL, "")
 		r.ExitAll()
 	}
 
 	if err := gvalid.CheckMap(data.ToMap(), rules, msgs); err != nil {
 		response.Json(r, http.StatusBadRequest, e.INVALID_PARAMS, err.String())
 	}
-	userService := s_user.User{
-		ID:       r.GetInt("id"),
-		Username: data.GetString("username"),
-		Password: data.GetString("password"),
-		Role:     data.GetInts("role"),
+
+	roleService := s_role.Role{
+		ID:   r.GetInt("id"),
+		Name: data.GetString("name"),
+		Menu: data.GetInts("menu"),
 	}
 
-	if id, err := userService.Edit(); err != e.SUCCESS {
-		response.Json(r, http.StatusBadRequest, e.ERROR_USER_EDIT_FAIL, "")
+	if id, err := roleService.Edit(); err != e.SUCCESS {
+		response.Json(r, http.StatusBadRequest, e.ERROR_ROLE_EDIT_FAIL, "")
 
 	} else {
-		err := inject.Obj.Common.UserAPI.LoadPolicy(id)
+		err := inject.Obj.Common.RoleAPI.LoadPolicy(id)
 		if err != nil {
 			glog.Error(err)
 			response.Json(r, http.StatusBadRequest, e.ERROR_LOAD_CASBIN_FAIL, "")
@@ -160,22 +129,23 @@ func (c *Controller) Put(r *ghttp.Request) {
 // RESTFul - DELETE
 func (c *Controller) Delete(r *ghttp.Request) {
 	if id := r.GetInt("id"); id <= 0 {
-		response.Json(r, http.StatusBadRequest, e.ERROR_USER_DELETE_FAIL, "")
+		response.Json(r, http.StatusBadRequest, e.ERROR_ROLE_DELETE_FAIL, "")
+		r.ExitAll()
 	} else {
-		userService := s_user.User{ID: id}
-		_, err := userService.ExistByID()
+		roleService := s_role.Role{ID: id}
+		_, err := roleService.ExistByID()
 		if err != nil {
-			response.Json(r, http.StatusBadRequest, e.ERROR_USER_DELETE_FAIL, "")
+			response.Json(r, http.StatusBadRequest, e.ERROR_ROLE_DELETE_FAIL, "")
 			r.ExitAll()
 		}
-		user, err := userService.Get()
-		err = userService.Delete()
+		role, err := roleService.Get()
+		err = roleService.Delete()
 
 		if err != nil {
-			response.Json(r, http.StatusBadRequest, e.ERROR_USER_DELETE_FAIL, "")
+			response.Json(r, http.StatusBadRequest, e.ERROR_ROLE_DELETE_FAIL, "")
 			r.ExitAll()
 		} else {
-			inject.Obj.Enforcer.DeleteUser(user.Username)
+			inject.Obj.Enforcer.DeleteUser(role.Name)
 			response.Json(r, http.StatusOK, e.SUCCESS, nil)
 		}
 	}

@@ -1,15 +1,16 @@
 package s_role
 
 import (
-	"errors"
 	"github.com/casbin/casbin"
+	"github.com/gogf/gf/g/os/glog"
 	"github.com/hequan2017/coypus/app/model"
+	"github.com/hequan2017/coypus/library/e"
 )
 
 type Role struct {
 	ID   int
 	Name string
-	Menu int
+	Menu []int
 
 	CreatedBy  string
 	ModifiedBy string
@@ -20,7 +21,7 @@ type Role struct {
 	Enforcer *casbin.Enforcer `inject:""`
 }
 
-func (a *Role) Add() (id int, err error) {
+func (a *Role) Add() (id int, err int) {
 	role := map[string]interface{}{
 		"name":    a.Name,
 		"menu_id": a.Menu,
@@ -28,18 +29,18 @@ func (a *Role) Add() (id int, err error) {
 	name, _ := model.CheckRoleName(a.Name)
 
 	if name {
-		return 0, errors.New("name 名字重复,请更改！")
+		return 0, e.ERROR_ROLE_EXIST
 	}
 
-	if id, err := model.AddRole(role); err == nil {
-		return id, nil
+	if id, err := model.AddRole(role); err != nil {
+		return 0, e.ERROR_ROLE_ADD_FAIL
 	} else {
-		return 0, err
+		return id, e.SUCCESS
 	}
 
 }
 
-func (a *Role) Edit() error {
+func (a *Role) Edit() (id, error int) {
 	data := map[string]interface{}{
 		"name":    a.Name,
 		"menu_id": a.Menu,
@@ -47,18 +48,16 @@ func (a *Role) Edit() error {
 	name, _ := model.CheckRoleNameId(a.Name, a.ID)
 
 	if name {
-		return errors.New("name 名字重复,请更改！")
+		return 0, e.ERROR_ROLE_EXIST
 	}
 	err := model.EditRole(a.ID, data)
+
 	if err != nil {
-		return err
+		glog.Error(err)
+		return 0, e.ERROR_ROLE_EDIT_FAIL
 	}
-	if a.Menu != 0 {
-		if err := a.LoadPolicy(a.ID); err != nil {
-			return err
-		}
-	}
-	return nil
+
+	return a.ID, e.SUCCESS
 }
 
 func (a *Role) Get() (*model.Role, error) {
@@ -147,6 +146,3 @@ func (a *Role) LoadPolicy(id int) error {
 	}
 	return nil
 }
-
-
-

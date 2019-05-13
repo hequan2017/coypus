@@ -97,7 +97,7 @@ func CheckUserUsernameId(username string, id int) (bool, error) {
 func EditUser(id int, data map[string]interface{}) (ids int, err error) {
 	var role []Role
 	var user User
-	db.Where("id in (?)", data["role_id"].(int)).Find(&role)
+	db.Where("id in (?)", data["role_id"]).Find(&role)
 	if err := db.Where("id = ? AND deleted_on = ? ", id, 0).Find(&user).Error; err != nil {
 		return 0, err
 	}
@@ -140,7 +140,6 @@ func CleanAllUser() error {
 	if err := db.Unscoped().Where("deleted_on != ? ", 0).Delete(&User{}).Error; err != nil {
 		return err
 	}
-
 	return nil
 }
 

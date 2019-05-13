@@ -57,9 +57,11 @@ func (a *User) Add() (id int, err int) {
 		return 0, e.ERROR_USER_EXIST
 	}
 	for _, v := range a.Role {
-		roles, _ := model.ExistRoleByID(v)
-		if !roles {
-			return 0, e.ERROR_ROLE_EXIST_FAIL
+		if v > 0 {
+			roles, _ := model.ExistRoleByID(v)
+			if !roles {
+				return 0, e.ERROR_ROLE_EXIST_FAIL
+			}
 		}
 	}
 
@@ -73,15 +75,23 @@ func (a *User) Add() (id int, err int) {
 func (a *User) Edit() (id, error int) {
 	data := map[string]interface{}{
 		"username": a.Username,
-		"password": a.Password,
+		"password": gsha1.Encrypt(a.Password),
 		"role_id":  a.Role,
+	}
+	for _, v := range a.Role {
+		if v > 0 {
+			roles, _ := model.ExistRoleByID(v)
+			if !roles {
+				return 0, e.ERROR_ROLE_EXIST_FAIL
+			}
+		}
 	}
 
 	id, err := model.EditUser(a.ID, data)
 	if err != nil {
 		return 0, e.INVALID_PARAMS
 	}
-	return id, 0
+	return id, e.SUCCESS
 }
 
 func (a *User) Get() (*model.User, error) {

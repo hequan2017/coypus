@@ -27,7 +27,9 @@
 * 登录
 * jwt验证
 * 权限验证 
-* 用户user   增删改查
+* 用户user      增删改查
+* 权限组role    增删改查
+* 菜单menu      (待开发)
 
 
 
@@ -66,7 +68,7 @@ hequan     test
 	"password": "123456"
 }
 
-访问  /api/v1/users 
+访问 http://127.0.0.1:8000/api/v1/users?page=1
  
 请求头设置  Authorization: Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -75,7 +77,14 @@ hequan     test
 
 ##  运行
 
+* 部署mysql,创建库 coypus
+* 导入docfile/sql/coypus.sql
+* 修改配置文件 config/config.toml
+
+
 ```bash
+
+
 go run  main.go
 
 2019/05/08 18:10:38 [info] replacing callback `gorm:update_time_stamp` from E:/coypus/app/model/model.go:40

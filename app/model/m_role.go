@@ -79,9 +79,9 @@ func CheckRoleNameId(name string, id int) (bool, error) {
 }
 
 func EditRole(id int, data map[string]interface{}) error {
-	var role []Role
-	var menu Menu
-	db.Where("id in (?)", data["menu_id"].(int)).Find(&menu)
+	var role Role
+	var menu []Menu
+	db.Where("id in (?)", data["menu_id"]).Find(&menu)
 
 	if err := db.Where("id = ? AND deleted_on = ? ", id, 0).Find(&role).Error; err != nil {
 		return err
@@ -97,7 +97,7 @@ func AddRole(data map[string]interface{}) (id int, err error) {
 		Name: data["name"].(string),
 	}
 	var menu []Menu
-	db.Where("id in (?)", data["menu_id"].(int)).Find(&menu)
+	db.Where("id in (?)", data["menu_id"]).Find(&menu)
 	if err := db.Create(&role).Association("Menu").Append(menu).Error; err != nil {
 		return 0, err
 	}

@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gogf/gf/g"
+	"github.com/hequan2017/coypus/app/api/a_role"
 	"github.com/hequan2017/coypus/app/api/a_user"
 )
 
@@ -11,4 +12,5 @@ func init() {
 	s := g.Server()
 	s.BindHandler("/token", a_user.Login)
 	s.BindObjectRest("/api/v1/users/*id", new(a_user.Controller))
+	s.BindObjectRest("/api/v1/roles/*id", new(a_role.Controller))
 }

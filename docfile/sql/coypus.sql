@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2019-05-08 18:12:18
+Date: 2019-05-13 15:49:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `go_menu` (
 -- ----------------------------
 -- Records of go_menu
 -- ----------------------------
-INSERT INTO `go_menu` VALUES ('1', '查询所有菜单', '/api/v1/menus', 'GET', null, null, '0');
+INSERT INTO `go_menu` VALUES ('1', '查询所有菜单', '/api/v1/menus', 'GET', '0', '1557732196', '0');
 INSERT INTO `go_menu` VALUES ('2', '查询单个菜单', '/api/v1/menus/:id', 'GET', null, null, '0');
 INSERT INTO `go_menu` VALUES ('3', '创建单个菜单', '/api/v1/menus', 'POST', null, null, '0');
 INSERT INTO `go_menu` VALUES ('4', '更新单个菜单', '/api/v1/menus/:id', 'PUT', null, null, '0');
@@ -48,7 +48,7 @@ INSERT INTO `go_menu` VALUES ('12', '查询单个角色', '/api/v1/roles/:id', '
 INSERT INTO `go_menu` VALUES ('13', '创建单个角色', '/api/v1/roles', 'POST', null, null, '0');
 INSERT INTO `go_menu` VALUES ('14', '更新单个角色', '/api/v1/roles/:id', 'PUT', null, null, '0');
 INSERT INTO `go_menu` VALUES ('15', '删除单个角色', '/api/v1/roles/:id', 'DELETE', null, null, '0');
-INSERT INTO `go_menu` VALUES ('16', '登录', '/auth', 'GET', null, null, '0');
+INSERT INTO `go_menu` VALUES ('16', '登录', '/token', 'POST', null, null, '0');
 
 -- ----------------------------
 -- Table structure for go_role
@@ -66,7 +66,8 @@ CREATE TABLE `go_role` (
 -- ----------------------------
 -- Records of go_role
 -- ----------------------------
-INSERT INTO `go_role` VALUES ('1', 'test', null, null, '0');
+INSERT INTO `go_role` VALUES ('1', 'test1', '0', '1557730509', '0');
+INSERT INTO `go_role` VALUES ('2', 'test2', null, null, '0');
 
 -- ----------------------------
 -- Table structure for go_role_menu
@@ -117,7 +118,7 @@ CREATE TABLE `go_user` (
 -- Records of go_user
 -- ----------------------------
 INSERT INTO `go_user` VALUES ('1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', null, null, '0');
-INSERT INTO `go_user` VALUES ('2', 'hequan', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1550642309', '1550642309', '0');
+INSERT INTO `go_user` VALUES ('2', 'hequan', '7c4a8d09ca3762af61e59520943dc26494f8941b', null, null, '0');
 
 -- ----------------------------
 -- Table structure for go_user_role
