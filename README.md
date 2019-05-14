@@ -24,6 +24,7 @@
 
 
 ## 实现功能
+* 前端项目   https://github.com/hequan2017/coypus-vue  
 * 登录
 * jwt验证
 * 权限验证 

@@ -40,7 +40,6 @@ func Login(r *ghttp.Request) {
 
 	authService := s_user.User{Username: data.GetString("username"), Password: data.GetString("password")}
 	_, err := authService.Check()
-
 	if err != nil {
 		response.Json(r, http.StatusBadRequest, e.ERROR_USER_NOT_EXIST, "")
 	} else {
@@ -50,6 +49,44 @@ func Login(r *ghttp.Request) {
 		}
 		response.Json(r, http.StatusOK, e.SUCCESS, data)
 	}
+}
+func UserInfo(r *ghttp.Request) {
+
+	data := map[string]interface{}{
+		"name":    "admin",
+		"user_id": "1",
+		"access":  []string{"admin"},
+		"token":   "token",
+		"avatar":  "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png",
+	}
+	response.Json(r, http.StatusOK, e.SUCCESS, data)
+}
+
+func Menu(r *ghttp.Request) {
+
+	data := []interface{}{
+		map[string]interface{}{
+			"path": "/assets",
+			"name": "assets",
+			"meta": map[string]string{
+				"icon":  "md-menu",
+				"title": "资产管理",
+			},
+			"component": "Main",
+			"children": []interface{}{map[string]interface{}{
+				"path": "ecs",
+				"name": "ecs",
+				"meta": map[string]string{
+					"icon":  "md-funnel",
+					"title": "ecs",
+				},
+				"component": "assets/ecs/ecs-list",
+			},
+			},
+		},
+	}
+
+	response.Json(r, http.StatusOK, e.SUCCESS, data)
 }
 
 // RESTFul - GET

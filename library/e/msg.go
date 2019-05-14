@@ -23,6 +23,15 @@ var MsgFlags = map[int]string{
 	ERROR_ROLE_EDIT_FAIL:   "修改权限组失败",
 	ERROR_ROLE_DELETE_FAIL: "删除权限组失败",
 
+	ERROR_MENU_EXIST:      "已存在该菜单名称",
+	ERROR_MENU_NOT_EXIST:  "该菜单不存在",
+	ERROR_MENU_EXIST_FAIL: "获取已存在菜单失败",
+
+	ERROR_MENU_GET_S_FAIL:  "获取所有菜单失败",
+	ERROR_MENU_ADD_FAIL:    "新增菜单失败",
+	ERROR_MENU_EDIT_FAIL:   "修改菜单失败",
+	ERROR_MENU_DELETE_FAIL: "删除菜单失败",
+
 	ERROR_AUTH_CHECK_TOKEN_FAIL: "Token鉴权失败",
 	ERROR_LOAD_CASBIN_FAIL:      "加载用户权限失败",
 }
