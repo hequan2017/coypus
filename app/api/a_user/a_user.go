@@ -66,21 +66,21 @@ func Menu(r *ghttp.Request) {
 
 	data := []interface{}{
 		map[string]interface{}{
-			"path": "/assets",
-			"name": "assets",
+			"path": "/system",
+			"name": "system",
 			"meta": map[string]string{
 				"icon":  "md-menu",
 				"title": "资产管理",
 			},
 			"component": "Main",
 			"children": []interface{}{map[string]interface{}{
-				"path": "ecs",
-				"name": "ecs",
+				"path": "user",
+				"name": "user",
 				"meta": map[string]string{
 					"icon":  "md-funnel",
-					"title": "ecs",
+					"title": "user",
 				},
-				"component": "assets/ecs/ecs-list",
+				"component": "system/user/user-list",
 			},
 			},
 		},
