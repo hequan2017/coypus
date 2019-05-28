@@ -6,7 +6,7 @@
 
 # 数据库连接
 [database]
-    host = "192.168.100.50:4000"
+    host = "192.168.100.50:3306"
     user = "root"
     pass = "123456"
     name = "coypus"
