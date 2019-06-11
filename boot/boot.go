@@ -13,21 +13,20 @@ import (
 // 用于应用初始化。
 func init() {
 
-	v := g.View()
+	_ = g.View()
 	c := g.Config()
 	s := g.Server()
 
 	// 模板引擎配置
-	_ = v.AddPath("template")
-	v.SetDelimiters("${", "}")
+	//_ = v.AddPath("template")
+	//v.SetDelimiters("${", "}")
 
 	// glog配置
 	logpath := c.GetString("setting.logpath")
 	glog.SetPath(logpath)
-	glog.SetStdPrint(true)
 
 	// Web Server配置
-	s.SetServerRoot("public")
+	//s.SetServerRoot("public")
 	s.SetLogPath(logpath)
 	s.SetNameToUriType(ghttp.NAME_TO_URI_TYPE_ALLLOWER)
 	s.SetErrorLogEnabled(true)

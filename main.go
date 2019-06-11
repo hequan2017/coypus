@@ -7,6 +7,5 @@ import (
 
 func main() {
 	s := g.Server()
-	s.SetPort(80)
 	_ = s.Run()
 }
