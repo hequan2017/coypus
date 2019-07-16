@@ -7,5 +7,5 @@ import (
 
 func main() {
 	s := g.Server()
-	_ = s.Run()
+	s.Run()
 }
