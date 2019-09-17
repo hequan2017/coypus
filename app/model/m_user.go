@@ -2,7 +2,7 @@ package model
 
 import (
 	"errors"
-	"github.com/gogf/gf/g/os/glog"
+	"github.com/gogf/gf/os/glog"
 	"github.com/jinzhu/gorm"
 )
 

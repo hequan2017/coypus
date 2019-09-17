@@ -2,15 +2,15 @@ package model
 
 import (
 	"fmt"
-	"github.com/gogf/gf/g"
-	"log"
+	"github.com/gogf/gf/frame/g"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
 
 	"time"
 )
 
-var  db  *gorm.DB
+var db *gorm.DB
 
 type Model struct {
 	ID         int `gorm:"primary_key" json:"id"`
@@ -42,7 +42,6 @@ func init() {
 	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
-
 
 }
 

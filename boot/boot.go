@@ -1,9 +1,9 @@
 package boot
 
 import (
-	"github.com/gogf/gf/g"
-	"github.com/gogf/gf/g/net/ghttp"
-	"github.com/gogf/gf/g/os/glog"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/glog"
 	_ "github.com/hequan2017/coypus/app/model"
 	"github.com/hequan2017/coypus/library/inject"
 	_ "github.com/hequan2017/coypus/library/inject"

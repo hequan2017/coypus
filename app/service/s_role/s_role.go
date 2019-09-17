@@ -2,7 +2,7 @@ package s_role
 
 import (
 	"github.com/casbin/casbin"
-	"github.com/gogf/gf/g/os/glog"
+	"github.com/gogf/gf/os/glog"
 	"github.com/hequan2017/coypus/app/model"
 	"github.com/hequan2017/coypus/library/e"
 )

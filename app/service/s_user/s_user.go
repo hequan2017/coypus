@@ -2,8 +2,8 @@ package s_user
 
 import (
 	"github.com/casbin/casbin"
-	"github.com/gogf/gf/g/crypto/gsha1"
-	"github.com/gogf/gf/g/os/glog"
+	"github.com/gogf/gf/crypto/gsha1"
+	"github.com/gogf/gf/os/glog"
 	"github.com/hequan2017/coypus/app/model"
 	"github.com/hequan2017/coypus/library/e"
 )

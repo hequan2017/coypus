@@ -2,9 +2,9 @@ package permission
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gogf/gf/g"
-	"github.com/gogf/gf/g/net/ghttp"
-	"github.com/gogf/gf/g/os/glog"
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/os/glog"
 	"github.com/hequan2017/coypus/library/e"
 	"github.com/hequan2017/coypus/library/inject"
 	jwtGet "github.com/hequan2017/coypus/library/jwt"
